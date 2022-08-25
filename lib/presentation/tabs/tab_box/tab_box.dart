@@ -1,0 +1,80 @@
+import 'package:exam3/presentation/tabs/cart/cart_screen.dart';
+import 'package:exam3/presentation/tabs/categories/categories_screen.dart';
+import 'package:exam3/presentation/tabs/products/all_products/products..dart';
+import 'package:flutter/material.dart';
+
+import '../../../data/api/api_provider.dart';
+import '../../../data/my_repository.dart';
+
+class TabBox extends StatefulWidget {
+  const TabBox({Key? key}) : super(key: key);
+
+  @override
+  State<TabBox> createState() => _TabBoxState();
+}
+
+class _TabBoxState extends State<TabBox> {
+  int currentIndex = 0;
+  late MyRepository myRepository;
+  List<Widget> screens = [];
+
+  @override
+  void initState() {
+    myRepository = MyRepository(
+      apiProvider: ApiProvider(),
+    );
+
+    screens = [
+      CategoriesScreen(myRepository: myRepository),
+      CartScreen(myRepository: myRepository),
+      Products(myRepository: myRepository,)
+    ];
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      body: screens[currentIndex],
+      // IndexedStack(
+      //   index: currentIndex,
+      //   children: screens,
+      // ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Theme.of(context).primaryColor,
+        iconSize: 24,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        currentIndex: currentIndex,
+        selectedItemColor: Colors.white,
+        selectedLabelStyle: const TextStyle(color: Colors.green),
+        items: [
+          getItem(icon: Icons.category_rounded, labelText: "Kategoriya"),
+          getItem(icon: Icons.shopping_basket_rounded, labelText: "Savat"),
+          getItem(icon: Icons.production_quantity_limits, labelText: "Mahsulotlar"),
+
+        ],
+      ),
+    );
+  }
+
+  BottomNavigationBarItem getItem(
+      {required IconData icon, required String labelText}) {
+    return BottomNavigationBarItem(
+        label: labelText,
+        icon: Icon(
+          icon,
+          color: Colors.black,
+        ),
+        activeIcon: Icon(
+          icon,
+          color: Colors.white,
+        ));
+  }
+}
