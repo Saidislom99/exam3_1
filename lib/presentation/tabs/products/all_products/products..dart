@@ -88,26 +88,7 @@ class _ProductsState extends State<Products> {
       ),
     );
   }
-  Future<void> addToFavourites(ProductItem item) async {
-    if (favourites.map((e) => e.productId).toList().contains(item.id)) {
-      LocalDatabase.deleteCachedFavouriteById(
-        id: favourites.where((e) => e.productId == item.id).toList()[0].id!,
-      );
-    } else {
-       LocalDatabase.insertCachedFavourite(
-          CachedFavourite(
-              imageUrl:,
-              price: data[index].price,
-              name: data[index].name,
-              productId: data[index].id))
-      UtilityFunctions.getMyToast(
-        message: "Added to favourites!",
-      );
-    }
-    setState(() {});
-  }
 
-  bool isFavouriteProduct(ProductItem item) =>
-      favourites.map((e) => e.productId).toList().contains(item.id);
-}
+
+
 }
